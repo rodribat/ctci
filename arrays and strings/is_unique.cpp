@@ -1,6 +1,7 @@
 
 #include<iostream>
 #include<set>
+#include<algorithm>
 
 using namespace std;
 
@@ -50,14 +51,44 @@ bool isUnique3(string w)
     return true;
 }
 
+// solving using a bit vector (here we assume only lowercase characters) - O(n)
+bool isUnique4(string w)
+{
+    int bit_array = 0;
+
+    for (int i=0; i<w.size(); ++i)
+    {
+        int val = w[i] - 'a';
+        if ((bit_array & (1 << val)) > 0)
+            return false;
+        
+        bit_array = bit_array | (1 << val);
+    }
+
+    return true;
+}
+
+// solving by sorting the array - O(n.logn)
+bool isUnique5(string w)
+{
+    std::sort(w.begin(), w.end());
+
+    cout << w << endl;
+    
+    for (int i=1; i<w.size(); ++i)
+        if (w[i] == w[i-1])
+            return false;
+
+    return true;
+}
+
 main()
 {
     string s;
     cin >> s;
 
-    if (isUnique3(s))
+    if (isUnique5(s))
         cout << "IS UNIQUE" << endl;
     else
-        cout << "NOT UNIQUE" << endl;
-    
+        cout << "NOT UNIQUE" << endl;    
 }
