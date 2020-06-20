@@ -33,25 +33,24 @@ void removeDups(LinkedList list)
 void removeDups2(LinkedList list)
 {
     Node *n1, *n2;
-    for (n1=list.getHead(); n1->next!=NULL; n1=n1->next)
-        for (n2=n1; n2->next!=NULL; )
+    n1 = list.getHead();
+    while(n1->next!=NULL)
+    {
+        n2 = n1;
+        while(n2->next!=NULL)
         {
-            cout << "n1=" << n1->data << " n2=" << n2->next->data << endl;
-            
+            //cout << "n1=" << n1->data << " n2=" << n2->next->data << endl;
             if (n1->data == n2->next->data)
             {
-                cout << "removendo " << n1->data << endl;
                 Node *tmp = n2->next;
-                if (n2->next != NULL)
-                {
-                    n2->next = n2->next->next;
-                    n2 = n2->next;
-                }
-                else
-                    n2->next = NULL;
+                n2->next = n2->next->next;
                 delete tmp;
             }
+            else
+                n2 = n2->next;
         }
+        n1 = n1->next;
+    }
 };
 
 main()
