@@ -2,67 +2,69 @@
 
 using namespace std;
 
+template<class T>
 class Node
 {
     public:
     Node *next;
-    int data;
+    T data;
 
-    Node(int d)
+    Node(T d)
     {
         data = d;
         next = NULL;
     }
 };
 
+template<class T>
 class LinkedList
 {
     private:
-    Node *head;
+    Node<T> *head;
 
     public:
-    Node* getHead()
+    Node<T>* getHead()
     {
         return head;
     }
 
-    void appendToTail(int d)
+    void appendToTail(T d)
     {
         cout << "Inserting " << d << endl;
 
         if (head == NULL)
         {
-            head = new Node(d);
+            head = new Node<T>(d);
             return;
         }
 
-        Node *n = head;
+        Node<T> *n = head;
         while (n->next != NULL)
             n = n->next;
-        n->next = new Node(d);
+        n->next = new Node<T>(d);
 
         return;
     }
 
-    void deleteNode(int d)
+    void deleteNode(T d)
     {
         cout << "Deleting " << d << endl;
 
         if (head->data == d)
         {
-            Node* tmp = head;
+            Node<T>* tmp = head;
             head = head->next;
             delete tmp;
 
             return;
         }
 
-        Node* n = head;
+        Node<int>* n = head;
         while (n->next != NULL)
         {
             if (n->next->data == d)
             {
-                Node* tmp = n->next;
+                Node<T>* tmp = n->next;
                 n->next = n->next->next;
                 delete tmp;
                 return;
@@ -76,7 +78,7 @@ class LinkedList
     string toString()
     {
         string str = "";
-        Node* n = head;
+        Node<T>* n = head;
         str = str + to_string(n->data);
         while(n->next != NULL)
         {

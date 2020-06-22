@@ -4,7 +4,7 @@
 
 main()
 {
-    LinkedList linkedList = LinkedList();
+    LinkedList<int> linkedList = LinkedList<int>();
     linkedList.appendToTail(10);
     linkedList.appendToTail(20);
     linkedList.appendToTail(30);
