@@ -10,10 +10,13 @@ class StackNode
 {
     public:
     T value;
+    StackNode<T> *min_so_far;
     StackNode<T> *next;
+
     StackNode(T value)
     {
-        this->value;
+        this->value = value;
+        min_so_far = NULL;
         next = NULL;
     }
 };
@@ -22,17 +25,15 @@ template<class T>
 class StackMin
 {
     public:
-    StackNode<T> top;
-    StackNode<T> min;
+    StackNode<T> *top;
     void push(T value);
     T pop();
     T peek();
-    T min();
+    T peek_min();
     string to_string();
     StackMin()
     {
         top = NULL;
-        min = NULL;
     }
 };
 
@@ -44,14 +45,14 @@ void StackMin<T>::push(T value)
     if (top == NULL)
     {
         top = node;
-        min = top;
+        node->min_so_far = top;
         return;
     }
 
     node->next = top;
+    node->min_so_far = value < top->min_so_far->value ? node : top;
+
     top = node;
-    if (value < min->value)
-        min = node;
 }
 
 template<class T>
@@ -64,18 +65,6 @@ T StackMin<T>::pop()
     T ret = node->value;
 
     top = top->next;
-
-    //update minimun
-    if (node == min)
-    {
-        StackNode<T> * n = top->next, min = top;
-        while (n != NULL)
-        {
-            if (min->value > n->value)
-                min = n;
-            n = n->next;
-        }
-    }
     delete node;
 
     return ret;
@@ -91,12 +80,12 @@ T StackMin<T>::peek()
 }
 
 template<class T>
-T StackMin<T>::min()
+T StackMin<T>::peek_min()
 {
-    if (min == NULL)
+    if (top == NULL)
         return -1;
 
-    return min->value;
+    return top->min_so_far->value;
 }
 
 template<class T>
@@ -109,6 +98,8 @@ string StackMin<T>::to_string()
         str = str + " " + std::to_string(n->value);
         n = n->next;
     }
+
+    return str;
 }
 
 main()
@@ -123,5 +114,19 @@ main()
     stack.push(8);
     stack.push(2);
 
-    cout << "Minimum: " << std::to_string(stack.min()) << endl;
+    cout << "Stack: " << stack.to_string() << endl;
+    cout << "Minimum: " << std::to_string(stack.peek_min()) << endl << endl;
+
+    cout << "Popping " << stack.pop() << endl;
+    cout << "Popping " << stack.pop() << endl;
+    cout << "Popping " << stack.pop() << endl;
+
+    cout << "Stack: " << stack.to_string() << endl;
+    cout << "Minimum: " << std::to_string(stack.peek_min()) << endl << endl;
+
+    cout << "Popping " << stack.pop() << endl;
+    cout << "Popping " << stack.pop() << endl;
+
+    cout << "Stack: " << stack.to_string() << endl;
+    cout << "Minimum: " << std::to_string(stack.peek_min()) << endl;
 }
