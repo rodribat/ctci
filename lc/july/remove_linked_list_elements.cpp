@@ -19,6 +19,46 @@ struct ListNode {
  
 class Solution {
 public:
+
+    // recursive solution
+    ListNode* removeElementsRecursive(ListNode* head, int val) {
+        
+        if (!head) return head;
+        
+        ListNode* n = removeElements(head->next, val);
+        if (head->val == val) // if the current value needs to be removed - bypass current element returning next valid element returned in n;
+            return n;
+        else // current value don't need to be removed - update head->next and return current head
+        {
+            head->next = n;
+            return head;
+        }
+    }
+
+    // simpler solution
+    ListNode* removeElementsSimpler(ListNode* head, int val) {
+        
+        if (!head) return head;
+        
+        ListNode* curr = head;
+        ListNode* prev = nullptr;
+
+        while (!curr)
+        {
+            if (curr->val == val)
+            {
+                if (!prev) head = curr->next;
+                else prev = curr->next;
+            }
+            else
+                prev = curr;
+                
+            curr = curr->next;
+        }
+        
+        return head;
+    }
+
     ListNode* removeElements(ListNode* head, int val) {
         
         while (head != nullptr && head->val == val)
